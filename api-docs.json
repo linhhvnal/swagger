@@ -2013,7 +2013,7 @@
         "tags": [
           "Ticket Orders"
         ],
-        "summary": "Get Multiple Ticket Order Event Types",
+        "summary": "Get all temporary daily seats in cart",
         "responses": {
           "200": {
             "description": "Ok",
