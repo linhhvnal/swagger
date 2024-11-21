@@ -1,0 +1,2053 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Online Ticket System"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "Authorization": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "in": "header"
+      }
+    },
+    "responses": {
+      "SuccessCount": {
+        "description": "Ok",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "count": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SuccessCreate": {
+        "description": "Created",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SuccessUpdate": {
+        "description": "Ok",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SuccessDelete": {
+        "description": "No Content"
+      },
+      "SuccessDownload": {
+        "description": "Ok",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string",
+                  "description": "Server validated excel file path"
+                }
+              }
+            }
+          }
+        }
+      },
+      "InvalidError": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Status code",
+                      "default": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message",
+                      "default": "リクエストが不正です。"
+                    },
+                    "developerMessage": {
+                      "type": "string",
+                      "description": "Error stack",
+                      "default": ""
+                    },
+                    "messageJson": {
+                      "type": "object",
+                      "description": "Message object",
+                      "default": null
+                    },
+                    "developerJson": {
+                      "type": "array",
+                      "default": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ValidationError": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "DeleteError": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Status code",
+                      "default": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message",
+                      "default": "削除対象のデータがありません。"
+                    },
+                    "developerMessage": {
+                      "type": "string",
+                      "description": "Error stack",
+                      "default": ""
+                    },
+                    "messageJson": {
+                      "type": "object",
+                      "description": "Message object",
+                      "default": null
+                    },
+                    "developerJson": {
+                      "type": "array",
+                      "default": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Status code",
+                      "default": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message",
+                      "default": "リソースが存在しません。"
+                    },
+                    "developerMessage": {
+                      "type": "string",
+                      "description": "Error stack",
+                      "default": ""
+                    },
+                    "messageJson": {
+                      "type": "object",
+                      "description": "Message object",
+                      "default": null
+                    },
+                    "developerJson": {
+                      "type": "array",
+                      "default": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "AuthorizationMapError": {
+        "description": "Forbidden",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Status code",
+                      "default": 409
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message",
+                      "default": "権限がありません。"
+                    },
+                    "developerMessage": {
+                      "type": "string",
+                      "description": "Error stack",
+                      "default": ""
+                    },
+                    "messageJson": {
+                      "type": "object",
+                      "description": "Message object",
+                      "default": null
+                    },
+                    "developerJson": {
+                      "type": "array",
+                      "default": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ConflictError": {
+        "description": "Conflict",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Status code",
+                      "default": 409
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message",
+                      "default": "リソースが競合しました。"
+                    },
+                    "developerMessage": {
+                      "type": "string",
+                      "description": "Error stack",
+                      "default": ""
+                    },
+                    "messageJson": {
+                      "type": "object",
+                      "description": "Message object",
+                      "default": null
+                    },
+                    "developerJson": {
+                      "type": "array",
+                      "default": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Internal Server Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Status code",
+                      "default": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message",
+                      "default": "システム管理者に連絡して下さい。"
+                    },
+                    "developerMessage": {
+                      "type": "string",
+                      "description": "Error stack",
+                      "default": ""
+                    },
+                    "messageJson": {
+                      "type": "object",
+                      "description": "Message object",
+                      "default": null
+                    },
+                    "developerJson": {
+                      "type": "array",
+                      "default": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "integer",
+                "description": "Status code",
+                "default": 400
+              },
+              "message": {
+                "type": "string",
+                "description": "Error message"
+              },
+              "developerMessage": {
+                "type": "string",
+                "description": "Developer error message"
+              },
+              "messageJson": {
+                "type": "object",
+                "description": "Message object",
+                "default": null
+              },
+              "developerJson": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "instancePath": {
+                      "type": "string",
+                      "description": "Instance path"
+                    },
+                    "schemaPath": {
+                      "type": "string",
+                      "description": "Schema path"
+                    },
+                    "keyword": {
+                      "type": "string",
+                      "description": "Validation error type"
+                    },
+                    "params": {
+                      "type": "object",
+                      "properties": {
+                        "missingProperty": {
+                          "type": "string",
+                          "description": "Field name"
+                        },
+                        "type": {
+                          "type": "string",
+                          "description": "Data type"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Field validation error message"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "VersionField": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer"
+          }
+        }
+      },
+      "MasterVersionField": {
+        "type": "object",
+        "properties": {
+          "masterVersion": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonFields": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/VersionField"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "createdBy": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedBy": {
+                "type": "string"
+              },
+              "deletedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "deletedBy": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "UserItemBase": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "stadiumNo": {
+            "type": "string"
+          },
+          "tel": {
+            "type": "string"
+          },
+          "domTel": {
+            "type": "string"
+          },
+          "birthday": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "surName": {
+            "type": "string"
+          },
+          "givenName": {
+            "type": "string"
+          },
+          "isVelcaFc": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "isVarenFc": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "points": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          },
+          "pointUrl": {
+            "type": "string"
+          },
+          "buyHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/buy-history-item"
+            }
+          }
+        }
+      },
+      "UserLogin": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/UserItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/CommonFields"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string",
+                "description": "Bearer token"
+              },
+              "tokenType": {
+                "type": "string",
+                "description": "Token type",
+                "default": "Bearer"
+              }
+            }
+          }
+        ]
+      },
+      "BasketballSeatGradeItemBase": {
+        "type": "object",
+        "properties": {
+          "venueId": {
+            "type": "string"
+          },
+          "seatGradeId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "seatBlockId": {
+            "type": "string"
+          },
+          "seatBlockName": {
+            "type": "string"
+          },
+          "seatTypeId": {
+            "type": "string"
+          },
+          "seatTypeName": {
+            "type": "string"
+          },
+          "visible": {
+            "type": "boolean"
+          }
+        }
+      },
+      "BasketballSeatGradeList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasketballSeatGradeItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/CommonFields"
+          }
+        ]
+      },
+      "BasketballSeatItemBase": {
+        "type": "object",
+        "properties": {
+          "venueId": {
+            "type": "string"
+          },
+          "seatBlockId": {
+            "type": "string"
+          },
+          "seatAreaId": {
+            "type": "string"
+          },
+          "seatTypeId": {
+            "type": "string"
+          },
+          "seatId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "visible": {
+            "type": "boolean"
+          }
+        }
+      },
+      "BasketballSeatList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasketballSeatItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/CommonFields"
+          }
+        ]
+      },
+      "BasketballSeatPatchUpdateBody": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasketballSeatItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/VersionField"
+          },
+          {
+            "type": "object",
+            "required": [
+              "version"
+            ]
+          }
+        ]
+      },
+      "BasketballHodingSeatPostBody": {
+        "type": "object",
+        "properties": {
+          "seats": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "venueId": {
+                  "type": "string"
+                },
+                "seatGradeId": {
+                  "type": "string"
+                },
+                "seatBlockId": {
+                  "type": "string"
+                },
+                "seatTypeId": {
+                  "type": "string"
+                },
+                "seatId": {
+                  "type": "string"
+                },
+                "priceType": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "venueId",
+                "seatGradeId",
+                "seatBlockId",
+                "seatTypeId",
+                "seatId",
+                "priceType"
+              ]
+            },
+            "description": "Basketball holding seats"
+          }
+        }
+      },
+      "BasketballDailyHodingSeatPostBody": {
+        "type": "object",
+        "properties": {
+          "seats": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "venueId": {
+                  "type": "string"
+                },
+                "seatGradeId": {
+                  "type": "string"
+                },
+                "seatBlockId": {
+                  "type": "string"
+                },
+                "seatTypeId": {
+                  "type": "string"
+                },
+                "seatId": {
+                  "type": "string"
+                },
+                "priceType": {
+                  "type": "string"
+                },
+                "eventCode": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "venueId",
+                "seatGradeId",
+                "seatBlockId",
+                "seatTypeId",
+                "seatId",
+                "priceType",
+                "eventCode"
+              ]
+            },
+            "description": "Basketball daily holding seats"
+          }
+        }
+      },
+      "BasketballPrioritySeatPostBody": {
+        "type": "object",
+        "properties": {
+          "$ref": "./schemas/priority-seats-item-base"
+        }
+      },
+      "SoccerSeatBlockItemBase": {
+        "type": "object",
+        "properties": {
+          "venueId": {
+            "type": "string"
+          },
+          "seatBlockId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "seatAreaId": {
+            "type": "string"
+          },
+          "seatAreaName": {
+            "type": "string"
+          },
+          "seatTypeId": {
+            "type": "string"
+          },
+          "seatTypeName": {
+            "type": "string"
+          },
+          "visible": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SoccerSeatBlockList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SoccerSeatBlockItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/CommonFields"
+          }
+        ]
+      },
+      "SoccerSeatItemBase": {
+        "type": "object",
+        "properties": {
+          "venueId": {
+            "type": "string"
+          },
+          "seatBlockId": {
+            "type": "string"
+          },
+          "seatAreaId": {
+            "type": "string"
+          },
+          "seatTypeId": {
+            "type": "string"
+          },
+          "seatId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "visible": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SoccerSeatList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SoccerSeatItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/CommonFields"
+          }
+        ]
+      },
+      "SoccerSeatPatchUpdateBody": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SoccerSeatItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/VersionField"
+          },
+          {
+            "type": "object",
+            "required": [
+              "version"
+            ]
+          }
+        ]
+      },
+      "BasketballEventCategoryItemBase": {
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string"
+          },
+          "categoryId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "BasketballEventCategoryList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasketballEventCategoryItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/CommonFields"
+          }
+        ]
+      },
+      "BasketballScheduleItemBase": {
+        "type": "object",
+        "properties": {
+          "eventCode": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "eventDetail": {
+            "type": "string"
+          },
+          "opponentTeamId": {
+            "type": "string"
+          },
+          "opponentTeamName": {
+            "type": "string"
+          },
+          "opponentTeamAbbreviation": {
+            "type": "string"
+          },
+          "opponentTeamImage": {
+            "type": "string"
+          },
+          "venueId": {
+            "type": "string"
+          },
+          "eventType": {
+            "type": "integer"
+          },
+          "year": {
+            "type": "string"
+          },
+          "originDate": {
+            "type": "string"
+          },
+          "originStartTime": {
+            "type": "boolean"
+          },
+          "originEndTime": {
+            "type": "boolean"
+          },
+          "date": {
+            "type": "boolean"
+          },
+          "startTime": {
+            "type": "boolean"
+          },
+          "endTime": {
+            "type": "boolean"
+          },
+          "dayNightDivision": {
+            "type": "boolean"
+          },
+          "eventStatus": {
+            "type": "boolean"
+          },
+          "fcPreSalesStartDatetime": {
+            "type": "boolean"
+          },
+          "fcPreSalesEndDatetime": {
+            "type": "boolean"
+          },
+          "fcPreSalesPriceCode": {
+            "type": "boolean"
+          },
+          "preSalesStartDatetime": {
+            "type": "boolean"
+          },
+          "preSalesEndDatetime": {
+            "type": "boolean"
+          },
+          "preSalesPriceCode": {
+            "type": "boolean"
+          },
+          "sameDaySalesStartDatetime": {
+            "type": "boolean"
+          },
+          "sameDaySalesEndDatetime": {
+            "type": "boolean"
+          },
+          "fcSameDaySalesPriceCode": {
+            "type": "boolean"
+          },
+          "sameDaySalesPriceCode": {
+            "type": "boolean"
+          }
+        }
+      },
+      "BasketballScheduleList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasketballScheduleItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/CommonFields"
+          }
+        ]
+      },
+      "SoccerScheduleItemBase": {
+        "type": "object",
+        "properties": {
+          "eventCode": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "venueId": {
+            "type": "string"
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "year": {
+            "type": "integer"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "startTime": {
+            "type": "string",
+            "example": "16:09"
+          },
+          "dayNightDivision": {
+            "type": "string"
+          },
+          "visible": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SoccerScheduleList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SoccerScheduleItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/CommonFields"
+          }
+        ]
+      },
+      "BasketballDailySeatItemBase": {
+        "type": "object",
+        "properties": {
+          "dailySeatId": {
+            "type": "string"
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "eventCode": {
+            "type": "string"
+          },
+          "eventDate": {
+            "type": "string"
+          },
+          "venueId": {
+            "type": "string"
+          },
+          "seatGradeId": {
+            "type": "string"
+          },
+          "seatBlockId": {
+            "type": "string"
+          },
+          "seatTypeId": {
+            "type": "string"
+          },
+          "seatId": {
+            "type": "string"
+          },
+          "seatBranchNo": {
+            "type": "string"
+          },
+          "seatName": {
+            "type": "string"
+          },
+          "statusCode": {
+            "type": "string"
+          },
+          "temporaryHoldingDatetime": {
+            "type": "string"
+          },
+          "temporaryHoldingUserId": {
+            "type": "string"
+          },
+          "assigneeType": {
+            "type": "string"
+          },
+          "inviteeName": {
+            "type": "string"
+          },
+          "buyerId": {
+            "type": "string"
+          },
+          "holderId": {
+            "type": "string"
+          },
+          "visitorId": {
+            "type": "string"
+          },
+          "qrCode": {
+            "type": "string"
+          },
+          "passCode": {
+            "type": "string"
+          }
+        }
+      },
+      "BasketballDailySeatList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasketballDailySeatItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/CommonFields"
+          }
+        ]
+      },
+      "BasketballDailySeatPatchUpdateBody": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasketballDailySeatItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/VersionField"
+          },
+          {
+            "type": "object",
+            "required": [
+              "version"
+            ]
+          }
+        ]
+      },
+      "BasketballSeasonSeatItemBase": {
+        "type": "object",
+        "properties": {
+          "seasonSeatId": {
+            "type": "string"
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "seasonTicketType": {
+            "type": "string"
+          },
+          "venueId": {
+            "type": "string"
+          },
+          "seatGradeId": {
+            "type": "string"
+          },
+          "seatBlockId": {
+            "type": "string"
+          },
+          "seatTypeId": {
+            "type": "string"
+          },
+          "seatId": {
+            "type": "string"
+          },
+          "seatBranchNo": {
+            "type": "string"
+          },
+          "seatName": {
+            "type": "string"
+          },
+          "statusCode": {
+            "type": "string"
+          },
+          "temporaryHoldingDatetime": {
+            "type": "string"
+          },
+          "temporaryHoldingUserId": {
+            "type": "string"
+          },
+          "assigneeType": {
+            "type": "string"
+          },
+          "inviteeName": {
+            "type": "string"
+          },
+          "buyerId": {
+            "type": "string"
+          },
+          "holderId": {
+            "type": "string"
+          },
+          "visitor": {
+            "type": "string"
+          },
+          "qrCode": {
+            "type": "string"
+          },
+          "passCode": {
+            "type": "string"
+          }
+        }
+      },
+      "BasketballSeasonSeatList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasketballSeasonSeatItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/CommonFields"
+          }
+        ]
+      },
+      "BasketballSeasonSeatUpdateContinueBody": {
+        "type": "object",
+        "properties": {
+          "seats": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "venueId": {
+                  "type": "string"
+                },
+                "seatGradeId": {
+                  "type": "string"
+                },
+                "seatBlockId": {
+                  "type": "string"
+                },
+                "seatTypeId": {
+                  "type": "string"
+                },
+                "seatId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "venueId",
+                "seatGradeId",
+                "seatBlockId",
+                "seatTypeId",
+                "seatId"
+              ]
+            },
+            "description": "Basketball season seats"
+          }
+        },
+        "required": [
+          "seats"
+        ]
+      },
+      "BasketballSeasonSeatCheckValidationBody": {
+        "type": "object",
+        "properties": {
+          "seats": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "venueId": {
+                  "type": "string"
+                },
+                "seatGradeId": {
+                  "type": "string"
+                },
+                "seatBlockId": {
+                  "type": "string"
+                },
+                "seatTypeId": {
+                  "type": "string"
+                },
+                "seatId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "venueId",
+                "seatGradeId",
+                "seatBlockId",
+                "seatTypeId",
+                "seatId"
+              ]
+            },
+            "description": "Basketball season seats"
+          },
+          "seasonNumber": {
+            "type": "number",
+            "description": "Season number (set value is 1 or 2 or 3)"
+          }
+        },
+        "required": [
+          "seats",
+          "seasonNumber"
+        ]
+      },
+      "BasketballSeasonSeatPatchUpdateBody": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasketballSeasonSeatItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/VersionField"
+          },
+          {
+            "type": "object",
+            "required": [
+              "version"
+            ]
+          }
+        ]
+      },
+      "AssignSelectionSeatBody": {
+        "type": "object",
+        "properties": {
+          "ticketType": {
+            "type": "string",
+            "description": "Ticket type",
+            "example": "season"
+          },
+          "priceType": {
+            "type": "string",
+            "description": "Price type",
+            "example": "Adult"
+          },
+          "seats": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "venueId": {
+                  "type": "string"
+                },
+                "seatGradeId": {
+                  "type": "string"
+                },
+                "seatBlockId": {
+                  "type": "string"
+                },
+                "seatTypeId": {
+                  "type": "string"
+                },
+                "seatId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "venueId",
+                "seatGradeId",
+                "seatBlockId",
+                "seatTypeId",
+                "seatId"
+              ]
+            },
+            "description": "season seats"
+          }
+        },
+        "required": [
+          "seats",
+          "ticketType"
+        ]
+      },
+      "BasketballOpponentTeamItemBase": {
+        "type": "object",
+        "properties": {
+          "teamId": {
+            "type": "string"
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "abbreviation": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          }
+        }
+      },
+      "BasketballOpponentTeamList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasketballOpponentTeamItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/MasterVersionField"
+          },
+          {
+            "$ref": "#/components/schemas/CommonFields"
+          }
+        ]
+      },
+      "AvailabilityGradeList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AvailabilityGradeItemBase"
+          }
+        ]
+      },
+      "AvailabilityGradeItemBase": {
+        "type": "object",
+        "properties": {
+          "seatGradeId": {
+            "type": "string",
+            "description": "ID of the seat grade",
+            "example": "1"
+          },
+          "seatGradeName": {
+            "type": "string",
+            "description": "Name of the seat grade",
+            "example": "A"
+          },
+          "gradeShape": {
+            "type": "array",
+            "description": "Information about the shape of the grade",
+            "items": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "example": "#DC885A",
+                  "description": "Color of the shape in hexadecimal format"
+                },
+                "circle": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "integer",
+                      "example": 792,
+                      "description": "X-coordinate of the center of the circle"
+                    },
+                    "y": {
+                      "type": "integer",
+                      "example": 172,
+                      "description": "Y-coordinate of the center of the circle"
+                    },
+                    "textColor": {
+                      "type": "string",
+                      "example": "#fffff",
+                      "description": "Color of the text associated with the shape in hexadecimal format"
+                    }
+                  },
+                  "description": "Information about the circle"
+                },
+                "points": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "x": {
+                        "type": "integer",
+                        "description": "X-coordinate of the point"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "description": "Y-coordinate of the point"
+                      }
+                    },
+                    "required": [
+                      "x",
+                      "y"
+                    ]
+                  },
+                  "description": "List of points defining the shape"
+                },
+                "previewImage": {
+                  "type": "string",
+                  "description": "Image path for arena perspective from grade"
+                },
+                "image": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "frames": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "x": {
+                            "type": "integer",
+                            "description": "X-coordinate of the point"
+                          },
+                          "y": {
+                            "type": "integer",
+                            "description": "Y-coordinate of the point"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "year": {
+            "type": "number",
+            "description": "Year",
+            "format": "int32",
+            "default": 0,
+            "minimum": 0,
+            "example": 2024
+          },
+          "priceName": {
+            "type": "string",
+            "description": "Name of the price",
+            "example": "Adult"
+          },
+          "label": {
+            "type": "string",
+            "description": "Label",
+            "example": "A"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price",
+            "format": "double",
+            "default": 0,
+            "minimum": 0,
+            "example": 1000
+          }
+        }
+      },
+      "SeatAssignmentOption": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID of the seat"
+          },
+          "seatGradeId": {
+            "type": "string",
+            "description": "ID of the seat grade"
+          },
+          "seatBlockId": {
+            "type": "string",
+            "description": "ID of the seat block"
+          },
+          "rowNumber": {
+            "type": "integer",
+            "description": "Number of the row"
+          },
+          "seatNumber": {
+            "type": "integer",
+            "description": "Number of the seat"
+          }
+        }
+      },
+      "HolidayItemBase": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "HolidayList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HolidayItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/CommonFields"
+          }
+        ]
+      },
+      "DailySeatScheduleItemBase": {
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "eventDate": {
+            "type": "string"
+          },
+          "venueId": {
+            "type": "string"
+          },
+          "buyerId": {
+            "type": "string"
+          },
+          "holderId": {
+            "type": "string"
+          },
+          "visitorId": {
+            "type": "string"
+          }
+        }
+      },
+      "DailySeatScheduleList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DailySeatScheduleItemBase"
+          }
+        ]
+      },
+      "SeasonSeatScheduleItemBase": {
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string"
+          },
+          "venueId": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "eventDate": {
+            "type": "string"
+          },
+          "scheduleName": {
+            "type": "string"
+          },
+          "buyerId": {
+            "type": "string"
+          },
+          "holderId": {
+            "type": "string"
+          },
+          "visitorId": {
+            "type": "string"
+          }
+        }
+      },
+      "SeasonSeatScheduleList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SeasonSeatScheduleItemBase"
+          }
+        ]
+      },
+      "ShareSeasonTicketBody": {
+        "type": "object",
+        "properties": {
+          "seasonSeatId": {
+            "type": "string"
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "venueId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "venueId",
+          "seasonSeatId",
+          "eventType",
+          "userId"
+        ]
+      },
+      "ShareDailyTicketBody": {
+        "type": "object",
+        "properties": {
+          "dailySeatId": {
+            "type": "string"
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "venueId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "venueId",
+          "dailySeatId",
+          "eventType",
+          "userId"
+        ]
+      },
+      "RemoveSharedSeasonTicketBody": {
+        "type": "object",
+        "properties": {
+          "venueId": {
+            "type": "string",
+            "description": "Venue ID"
+          },
+          "seasonSeatId": {
+            "type": "string",
+            "description": "Season seat ID"
+          },
+          "eventType": {
+            "type": "string",
+            "description": "Event type"
+          }
+        },
+        "required": [
+          "venueId",
+          "seasonSeatId",
+          "eventType"
+        ]
+      },
+      "RemoveSharedDailyTicketBody": {
+        "type": "object",
+        "properties": {
+          "venueId": {
+            "type": "string",
+            "description": "Venue ID"
+          },
+          "dailySeatId": {
+            "type": "string",
+            "description": "Daily seat ID"
+          },
+          "eventType": {
+            "type": "string",
+            "description": "Event type"
+          }
+        },
+        "required": [
+          "venueId",
+          "dailySeatId",
+          "eventType"
+        ]
+      },
+      "ShareGuestSeasonTicketBody": {
+        "type": "object",
+        "properties": {
+          "shareType": {
+            "type": "string"
+          },
+          "seasonSeatId": {
+            "type": "string"
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "receiver": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "shareType",
+          "seasonSeatId",
+          "eventType",
+          "receiver"
+        ]
+      },
+      "ShareGuestDailyTicketBody": {
+        "type": "object",
+        "properties": {
+          "shareType": {
+            "type": "string"
+          },
+          "dailySeatId": {
+            "type": "string"
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "receiver": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "shareType",
+          "dailySeatId",
+          "eventType",
+          "receiver"
+        ]
+      },
+      "ShareGuestTicketLinkBody": {
+        "type": "object",
+        "properties": {
+          "ticketType": {
+            "type": "string",
+            "description": "Ticket type",
+            "example": "daily"
+          },
+          "token": {
+            "type": "string",
+            "description": "Token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1"
+          }
+        },
+        "required": [
+          "ticketType",
+          "token"
+        ]
+      },
+      "TicketOrderBody": {
+        "type": "object",
+        "properties": {
+          "ticketType": {
+            "type": "string",
+            "description": "Ticket type",
+            "example": "season"
+          },
+          "eventType": {
+            "type": "string",
+            "description": "Event type",
+            "example": "basketball"
+          },
+          "orderType": {
+            "type": "string",
+            "description": "Order type",
+            "example": "purchase"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Total Amount",
+            "example": 1000
+          },
+          "orderInfo": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "price": {
+                  "type": "number"
+                },
+                "passCodeId": {
+                  "type": "string"
+                },
+                "priceOfOrder": {
+                  "type": "string"
+                },
+                "dailySeatId": {
+                  "type": "string",
+                  "description": "Daily seat ID. Required if ticketType is daily."
+                },
+                "beforeDailySeatId": {
+                  "type": "string",
+                  "description": "Daily seat ID. Required if ticketType is daily and orderType is upgrade."
+                },
+                "afterDailySeatId": {
+                  "type": "string",
+                  "description": "Daily seat ID. Required if ticketType is daily and orderType is upgrade."
+                },
+                "eventCode": {
+                  "type": "string",
+                  "description": "Event code. Required if ticketType is daily."
+                },
+                "seasonSeatId": {
+                  "type": "string",
+                  "description": "Season seat ID. Required if ticketType is season."
+                },
+                "couponId": {
+                  "type": "string"
+                },
+                "couponValue": {
+                  "type": "number"
+                },
+                "pointSystemStatus": {
+                  "type": "string"
+                },
+                "point": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "price",
+                "passCodeId",
+                "priceOfOrder"
+              ]
+            }
+          }
+        },
+        "required": [
+          "ticketType",
+          "eventType",
+          "orderType",
+          "amount",
+          "orderInfo"
+        ]
+      },
+      "MultipleTicketOrderBody": {
+        "type": "object",
+        "properties": {
+          "orderInfo": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "eventType": {
+                  "type": "string",
+                  "description": "Event type",
+                  "example": "basketball"
+                },
+                "priceType": {
+                  "type": "string",
+                  "description": "Price type",
+                  "example": "adult"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "passCodeId": {
+                  "type": "string"
+                },
+                "priceOfOrder": {
+                  "type": "string"
+                },
+                "dailySeatId": {
+                  "type": "string",
+                  "description": "Daily seat ID. Required if ticketType is daily."
+                },
+                "eventCode": {
+                  "type": "string",
+                  "description": "Event code. Required if ticketType is daily."
+                }
+              },
+              "required": [
+                "price",
+                "eventCode",
+                "dailySeatId",
+                "priceOfOrder"
+              ]
+            }
+          }
+        },
+        "required": [
+          "orderInfo"
+        ]
+      },
+      "TicketOrderItemBase": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "orderId": {
+            "type": "string",
+            "description": "Order ID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "ticketType": {
+            "type": "string",
+            "description": "Ticket type",
+            "example": "season"
+          },
+          "eventType": {
+            "type": "string",
+            "description": "Event type",
+            "example": "basketball"
+          },
+          "orderType": {
+            "type": "string",
+            "description": "Order type",
+            "example": "purchase"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Total Amount",
+            "example": 1000
+          },
+          "orderDatetime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Order date and time",
+            "example": "2021-01-01T00:00:00Z"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of SBpayment (e.g., OK, NG, PY)",
+            "example": "OK"
+          },
+          "orderInfo": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "price": {
+                  "type": "number",
+                  "description": "Price"
+                },
+                "passCode": {
+                  "type": "string",
+                  "description": "Pass code"
+                },
+                "priceOfOrder": {
+                  "type": "string",
+                  "description": "Price of order"
+                },
+                "dailySeatId": {
+                  "type": "string",
+                  "description": "Daily seat ID"
+                },
+                "beforeDailySeatId": {
+                  "type": "string",
+                  "description": "Daily seat ID"
+                },
+                "afterDailySeatId": {
+                  "type": "string",
+                  "description": "Daily seat ID"
+                },
+                "eventCode": {
+                  "type": "string",
+                  "description": "Event code"
+                },
+                "seasonSeatId": {
+                  "type": "string",
+                  "description": "Season seat ID"
+                },
+                "couponId": {
+                  "type": "string",
+                  "description": "Coupon ID"
+                },
+                "couponValue": {
+                  "type": "number",
+                  "description": "Coupon value"
+                },
+                "pointSystemStatus": {
+                  "type": "string",
+                  "description": "Point system status"
+                },
+                "point": {
+                  "type": "number",
+                  "description": "Point"
+                }
+              }
+            },
+            "description": "Order information"
+          }
+        }
+      },
+      "TicketOrderList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TicketOrderItemBase"
+          },
+          {
+            "$ref": "#/components/schemas/CommonFields"
+          }
+        ]
+      }
+    }
+  },
+  "security": [
+    {
+      "Authorization": []
+    }
+  ],
+  "paths": {
+    "/api/v1/all-temporary-daily-seats": {
+      "get": {
+        "tags": [
+          "Ticket Orders"
+        ],
+        "summary": "Get Multiple Ticket Order Event Types",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "docs": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BasketballSeatList"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/InvalidError"
+          },
+          "409": {
+            "$ref": "#/components/responses/AuthorizationMapError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    }
+  }
+}
